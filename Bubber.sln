@@ -8,6 +8,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bubber", "Bubber\Bubber.csproj", "{B1C37538-0D40-4AC3-8417-EDEDBC3A7A7A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{82918664-F796-4789-B98E-6F4856760752}"
+	ProjectSection(SolutionItems) = preProject
+		Bubber.Contracts\API.md = Bubber.Contracts\API.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

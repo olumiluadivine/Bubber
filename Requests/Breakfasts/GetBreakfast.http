@@ -1,0 +1,5 @@
+@id = 00000000-0000-0000-0000-000000000000
+
+GET  https://localhost:7155/breakfast/{{{id}}}
+
+GET http://localhost:5149/breakfast/{{{id}}}

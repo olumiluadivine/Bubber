@@ -1,32 +1,67 @@
 ﻿using Bubber.Contracts.BreakFast;
+using Bubber.Models;
+using Bubber.Services.Breakfast;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bubber.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class BreakfastController : ControllerBase
     {
-        [HttpPost("/breakfast")]
-        public IActionResult CreateBreakfast(CreateBreakfastRequest createBreakfast)
+        private readonly IBreakfastService _breakfastService;
+        public BreakfastController(IBreakfastService breakfastService)
         {
-            return Ok(createBreakfast);
+            _breakfastService = breakfastService;
         }
 
-        [HttpGet("/breakfast/{id:guid}")]
+        [HttpPost()]
+        public IActionResult CreateBreakfast(CreateBreakfastRequest request)
+        {
+            var breakfast = new Breakfast(
+                Guid.NewGuid(),
+                request.Name,
+                request.Description,
+                request.StartDateTime,
+                request.EndDateTime,
+                DateTime.UtcNow,
+                request.Savory,
+                request.Sweet
+                );
+
+            //TODO: save, breakfast to database
+            _breakfastService.CreateBreakfast(breakfast);
+            var response = new BreakfastResponse(
+                breakfast.Id,
+                breakfast.Name,
+                breakfast.Description,
+                breakfast.StartDateTime,
+                breakfast.EndDateTime,
+                breakfast.LastModifiedDateTime,
+                breakfast.Savory,
+                breakfast.Sweet);
+
+            return CreatedAtAction(
+                actionName: nameof(GetBreakfast),
+                routeValues: new { id = breakfast.Id },
+                value: response
+                );
+        }
+
+        [HttpGet("{id:guid}")]
         public IActionResult GetBreakfast(Guid id)
         {
             return Ok(id);
         }
 
-        [HttpPut("/breakfast/{id:guid}")]
+        [HttpPut("{id:guid}")]
         public IActionResult UpsertBreakfast(Guid id, CreateBreakfastRequest createBreakfast)
         {
             return Ok(createBreakfast);
         }
 
-        [HttpDelete("/breakfast/{id:guid}")]
+        [HttpDelete("{id:guid}")]
         public IActionResult DeleteBreakfast(Guid id)
         {
             return Ok(id);
